@@ -103,6 +103,7 @@ void MouseCallback(int button, int state, int x, int y)
 			scene->DisableSelection();
 			return;
 		}
+		
 		if ((selectedNode != NULL)&&(node->ID != selectedNode->ID))
 		{
 			selectedNode->Selected = false;
@@ -114,13 +115,12 @@ void MouseCallback(int button, int state, int x, int y)
 
 		selectedNode = node;
 
-		if (selectedNode == NULL)
+		if ((selectedNode == NULL))
 		{
 			return;
 		}
 
 		int axis = scene->GetSelectAxisObject(x, y);
-
 		switch(axis)
 		{
 		case 1:
@@ -145,6 +145,7 @@ void MouseCallback(int button, int state, int x, int y)
 			scene->Translation.z(true);
 			break;
 		}
+		
 		float winZ;
 		glReadPixels(x, (float)device->Height - (float)y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ);
 		scene->zPoint = winZ;
@@ -180,7 +181,11 @@ void PassiveMotionFunc(int x, int y)
 	device->MouseX = x;
 	device->MouseY = y;
 
+	if (scene->GetSelectedNode() == NULL)
+		return;
+	scene->SelectedAxis = 0;
 	scene->GetPoint(x, y).print();
+	scene->SelectedAxis = scene->GetSelectAxisObject(x,y);
 	
 }
 
@@ -207,11 +212,7 @@ void MotionFunc(int x, int y)
 		glGetDoublev(GL_MODELVIEW_MATRIX, mat);
 
 		float distance = Vector3f(node->Position - scene->CameraPosition).length();
-		Vector3f dimension = scene->GetPoint(x,y) - worldCursorPos;/*Vector3f(
-			dx*distance/600 * Cos(scene->CameraRotation.y()) + dy*distance/600 * -Sin(scene->CameraRotation.y()),
-			dx*distance/600 * Sin(scene->CameraRotation.x()) + dy*distance/600 * Cos(scene->CameraRotation.x()), 
-			dx*distance/600 * Sin(scene->CameraRotation.y()) + dy*distance/600 * Cos(scene->CameraRotation.y())
-			);*/
+		Vector3f dimension = scene->GetPoint(x,y) - worldCursorPos;
 		if (scene->Translation.x())
 		{
 			node->Position.x(node->Position.x() + dimension.x());
@@ -299,7 +300,7 @@ void SpecialUpKeyboard(int key, int x, int y)
 
 int main(int argc, char** argv)
 {
-	for ( int i = 0; i < 100; i++)
+	for ( int i = 0; i < 20; i++)
 	{
 		scene->Nodes.push_back(new Primitive(Vector3f(rand()%50 - 25, rand()%50, -rand()%25 - 5), 0, 3, 
 			Vector3f((float)rand() / RAND_MAX, (float)rand() / RAND_MAX, (float)rand() / RAND_MAX), false, 0));

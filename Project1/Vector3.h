@@ -238,7 +238,7 @@ private:
 	}	
 	void print()
 	{
-		cout << "x = " << data[0] << ", y = " << data[1] << ",z = " << data[2] << endl;
+		//cout << "x = " << data[0] << ", y = " << data[1] << ",z = " << data[2] << endl;
 	}
 
 	Vector3 transformDirection (GLdouble m[16] )

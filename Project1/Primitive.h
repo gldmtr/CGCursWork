@@ -32,7 +32,7 @@ public:
 		{
 		case 0:
 			if (!wire)
-				glutSolidSphere(_size, 64, 64);
+				glutSolidSphere(_size, 16, 16);
 			else
 				glutWireCube(_size);
 			break;

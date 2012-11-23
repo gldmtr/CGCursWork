@@ -34,23 +34,41 @@ public:
 		glInitNames();
 		glPushName(0);
 		Vector3f pos = GetSelectedNode()->Position;
-		glLoadName(1);	// ось x
-			glBegin(GL_LINES);
-				glVertex3f(pos.x(), pos.y(), pos.z());
-				glVertex3f(pos.x() + 5, pos.y(), pos.z());
-			glEnd();
+		SceneNode* selected = GetSelectedNode();
+		glPushMatrix();
+			glTranslatef(selected->Position.x(), selected->Position.y(), selected->Position.z());
+				glPushMatrix();
+				glLoadName(1);
+				glBegin(GL_LINES);
+					glVertex3fv(&Vector3f(0,0,0)[0]);
+					glVertex3fv(&Vector3f(2,0,0)[0]);
+				glEnd();
+				glTranslatef(1.5,0,0);
+					glRotatef(90, 0, 1, 0);
+					glutSolidCone(0.2, 0.7, 16, 16);
+				glPopMatrix();
 
-		glLoadName(2);	// ось y 
-			glBegin(GL_LINES);
-				glVertex3f(pos.x(), pos.y(), pos.z());
-				glVertex3f(pos.x(), pos.y() + 5, pos.z());
-			glEnd();
+				glPushMatrix();
+				glLoadName(2);
+				glBegin(GL_LINES);
+					glVertex3fv(&Vector3f(0,0,0)[0]);
+					glVertex3fv(&Vector3f(0,2,0)[0]);
+				glEnd();
+				glTranslatef(0,1.5,0);
+					glRotatef(90, -1, 0, 0);
+					glutSolidCone(0.2, 0.7, 16, 16);
+				glPopMatrix();
 
-		glLoadName(3);	// ось z
-			glBegin(GL_LINES);
-				glVertex3f(pos.x(), pos.y(), pos.z());
-				glVertex3f(pos.x(), pos.y(), pos.z() + 5);
-			glEnd();
+				glPushMatrix();
+				glLoadName(3);
+				glBegin(GL_LINES);
+					glVertex3fv(&Vector3f(0,0,0)[0]);
+					glVertex3fv(&Vector3f(0,0,2)[0]);
+				glEnd();
+				glTranslatef(0,0,1.5);
+					glutSolidCone(0.2, 0.7, 16, 16);
+				glPopMatrix();
+			glPopMatrix();
 
 		glLoadName(4);	// плоскость xy
 			glBegin(GL_QUADS);
@@ -118,6 +136,10 @@ public:
 
 	int GetSelectAxisObject( int x, int y )
 	{
+		if (GetSelectedNode() == NULL)
+		{
+			return -1;
+		}
 		GLuint selBuffer[12] = {0};
 		int	viewport[4], Found = 0;
 
@@ -127,7 +149,7 @@ public:
 		glPushMatrix();
 			glRenderMode ( GL_SELECT );
 			glLoadIdentity();
-			gluPickMatrix ( x-5, viewport[3] - y - 5, 10, 10, viewport );
+			gluPickMatrix ( x-2, viewport[3] - y - 2, 4, 4, viewport );
 			gluPerspective(device->FovY,(GLfloat)device->Widht/(GLfloat)(device->Height+1),0.1f,100.0f);
 			glMatrixMode ( GL_MODELVIEW );
 				PushAxis();
@@ -242,21 +264,66 @@ public:
 			glDisable(GL_DEPTH_TEST);
 			glDisable(GL_LIGHTING);
 			glDisable(GL_LIGHT0);
-			glColor3f(1,0,0);
-			glBegin(GL_LINES);
-				glVertex3fv(&selected->Position[0]);
-				glVertex3fv(&Vector3f(selected->Position + Vector3f(5,0,0))[0]);
-			glEnd();
-			glColor3f(0,1,0);
-			glBegin(GL_LINES);
-				glVertex3fv(&selected->Position[0]);
-				glVertex3fv(&Vector3f(selected->Position + Vector3f(0,5,0))[0]);
-			glEnd();
-			glColor3f(0,0,1);
-			glBegin(GL_LINES);
-				glVertex3fv(&selected->Position[0]);
-				glVertex3fv(&Vector3f(selected->Position + Vector3f(0,0,5))[0]);
-			glEnd();
+			glPushMatrix();
+			glTranslatef(selected->Position.x(), selected->Position.y(), selected->Position.z());
+				glPushMatrix();
+				(SelectedAxis == 1)||(SelectedAxis == 4)||(SelectedAxis == 5) ? glColor3f(1,1,0) : glColor3f(1,0,0);
+				glBegin(GL_LINES);
+					glVertex3fv(&Vector3f(0,0,0)[0]);
+					glVertex3fv(&Vector3f(2,0,0)[0]);
+				glEnd();
+				glTranslatef(1.5,0,0);
+					glRotatef(90, 0, 1, 0);
+					glutSolidCone(0.2, 0.7, 16, 16);
+				glPopMatrix();
+
+				glPushMatrix();
+				(SelectedAxis == 2)||(SelectedAxis == 4)||(SelectedAxis == 6) ? glColor3f(1,1,0) : glColor3f(0,1,0);
+				glBegin(GL_LINES);
+					glVertex3fv(&Vector3f(0,0,0)[0]);
+					glVertex3fv(&Vector3f(0,2,0)[0]);
+				glEnd();
+				glTranslatef(0,1.5,0);
+					glRotatef(90, -1, 0, 0);
+					glutSolidCone(0.2, 0.7, 16, 16);
+				glPopMatrix();
+
+				glPushMatrix();
+				(SelectedAxis == 3)||(SelectedAxis == 5)||(SelectedAxis == 6) ? glColor3f(1,1,0) : glColor3f(0,0,1);
+				glBegin(GL_LINES);
+					glVertex3fv(&Vector3f(0,0,0)[0]);
+					glVertex3fv(&Vector3f(0,0,2)[0]);
+				glEnd();
+				glTranslatef(0,0,1.5);
+					glutSolidCone(0.2, 0.7, 16, 16);
+				glPopMatrix();
+			
+
+
+				glBegin(GL_LINES);
+				SelectedAxis == 4 ? glColor3f(1, 1, 0): glColor3f(0, 1, 0);
+					glVertex3f(0, 1.5f, 0);
+					glVertex3f(1.5f, 1.5f, 0);
+				SelectedAxis == 4 ? glColor3f(1, 1, 0): glColor3f(1, 0, 0);
+					glVertex3f(1.5f, 1.5f, 0);
+					glVertex3f(1.5f, 0, 0);
+					
+				SelectedAxis == 5 ? glColor3f(1, 1, 0): glColor3f(0, 0, 1);
+					glVertex3f(0, 0, 1.5f);
+					glVertex3f(1.5f, 0, 1.5f);
+				SelectedAxis == 5 ? glColor3f(1, 1, 0): glColor3f(1, 0, 0);
+					glVertex3f(1.5f, 0, 1.5f);
+					glVertex3f(1.5f, 0, 0);
+					
+				SelectedAxis == 6 ? glColor3f(1, 1, 0): glColor3f(0, 1, 0);
+					glVertex3f(0, 1.5f, 0);
+					glVertex3f(0, 1.5f, 1.5f);
+				SelectedAxis == 6 ? glColor3f(1, 1, 0): glColor3f(0, 0, 1);
+					glVertex3f(0, 1.5f, 1.5f);
+					glVertex3f(0, 0, 1.5f);
+				glEnd();
+			glPopMatrix();
+
 			glEnable(GL_DEPTH_TEST);
 			glEnable(GL_LIGHTING);
 			glEnable(GL_LIGHT0);
@@ -281,4 +348,5 @@ public:
 	bool IsNewObject;
 	int NewId;
 	float zPoint;
+	int SelectedAxis;
 };
