@@ -70,6 +70,7 @@
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneNode.h" />
+    <ClInclude Include="Transform.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

@@ -6,6 +6,7 @@
 #include "MainWindow.h"
 #include "Primitive.h"
 #include "Scene.h"
+#include "Transform.h"
 #include "Device.h"
 #include <iostream>
 #include <math.h>
@@ -18,8 +19,6 @@ using namespace std;
 void MotionFunc(int, int);
 
 float angle = 0;
-
-Scene *scene = new Scene();
 
 void Reshape(int width, int height)
 {
@@ -62,7 +61,7 @@ void Draw()
 	{
 		scene->Nodes[i]->Draw();
 	}
-	scene->DrawAxex();
+	Transformation->DrawTransformAxis();
 
 	static int frame = 0, currenttime = 0, timebase = 0;
 	char title[255] = {0};
@@ -87,7 +86,11 @@ void Draw()
 
 void MouseCallback(int button, int state, int x, int y)
 {
+	cout << "-------------------------" << endl;
 	cout << button << "button pressed" << endl;
+	scene->GetPoint(x, y).print();
+	cout << endl << scene->zPoint << endl;
+	cout << "-------------------------" << endl;
 	if (state == GLUT_DOWN)
 	{
 		if (scene->IsNewObject)
@@ -107,7 +110,6 @@ void MouseCallback(int button, int state, int x, int y)
 		if ((selectedNode != NULL)&&(node->ID != selectedNode->ID))
 		{
 			selectedNode->Selected = false;
-			node->Selected = true;
 		}
 		node->Selected = true;
 
@@ -120,7 +122,7 @@ void MouseCallback(int button, int state, int x, int y)
 			return;
 		}
 
-		int axis = scene->GetSelectAxisObject(x, y);
+		int axis = Transformation->GetSelectAxisObject(x, y);
 		switch(axis)
 		{
 		case 1:
@@ -145,7 +147,6 @@ void MouseCallback(int button, int state, int x, int y)
 			scene->Translation.z(true);
 			break;
 		}
-		
 		float winZ;
 		glReadPixels(x, (float)device->Height - (float)y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ);
 		scene->zPoint = winZ;
@@ -154,6 +155,7 @@ void MouseCallback(int button, int state, int x, int y)
 	{
 		scene->Translation = Vector3<bool>(false, false, false);
 	}
+	scene->SkipTransform = true;
 }
 
 void MouseWheel(int button, int dir, int x, int y)
@@ -185,49 +187,7 @@ void PassiveMotionFunc(int x, int y)
 		return;
 	scene->SelectedAxis = 0;
 	scene->GetPoint(x, y).print();
-	scene->SelectedAxis = scene->GetSelectAxisObject(x,y);
-	
-}
-
-void MotionFunc(int x, int y)
-{
-	int dx = x - device->MouseX;
-	int dy = y - device->MouseY;
-	device->MouseX = x;
-	device->MouseY = y;
-
-	static Vector3f worldCursorPos = scene->GetPoint(x,y);
-
-	scene->CursorPos = scene->GetPoint(x,y);
-
-	SceneNode* node = scene->GetSelectedNode();
-	if (node == NULL)   //поворот камеры
-	{
-		scene->CameraRotation += Vector3f((float)dy / (float)10, (float)dx / (float)10, 0);
-		return;
-	}
-	else				//действия с объектом
-	{
-		GLdouble mat[16] = {0};
-		glGetDoublev(GL_MODELVIEW_MATRIX, mat);
-
-		float distance = Vector3f(node->Position - scene->CameraPosition).length();
-		Vector3f dimension = scene->GetPoint(x,y) - worldCursorPos;
-		if (scene->Translation.x())
-		{
-			node->Position.x(node->Position.x() + dimension.x());
-		}
-		if (scene->Translation.y())
-		{
-			node->Position.y(node->Position.y() + dimension.y());
-		}
-		if (scene->Translation.z())
-		{
-			node->Position.z(node->Position.z() + dimension.z());
-		}
-		node->Position.print();
-	}
-	worldCursorPos = scene->CursorPos;
+	scene->SelectedAxis = Transformation->GetSelectAxisObject(x,y);
 }
 
 void KeyboardFunc(unsigned char key, int x, int y)
@@ -245,6 +205,9 @@ void KeyboardFunc(unsigned char key, int x, int y)
 	case 'z':
 		scene->Translation = Vector3<bool>(false, false, false);
 		scene->Translation.z(true);
+		break;
+	case 's':
+		Transformation->Mode = SCALE;
 		break;
 	case 'n':
 		SceneNode* newNode = new Primitive(Vector3f(0,0,-10), 0, 1, Vector3f(0,0,0), false, 0);
@@ -284,6 +247,11 @@ void SpecialKeyboard(int key, int x, int y)
 	if (key == GLUT_KEY_LEFT)
 		device->NavigationKeys[NAV_LEFT] = true;
 
+}
+
+void MotionFunc(int x, int y)
+{
+	Transformation->UpdateScene(x, y);
 }
 
 void SpecialUpKeyboard(int key, int x, int y)
@@ -329,5 +297,8 @@ int main(int argc, char** argv)
 	glDisable(GL_LIGHTING);
 	glDisable(GL_LIGHT0);
 	glDisable(GL_COLOR_MATERIAL);
+	delete scene;
+	delete Transformation;
+	delete device;
 	return 0;
 }

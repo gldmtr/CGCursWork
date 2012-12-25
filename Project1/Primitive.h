@@ -27,6 +27,7 @@ public:
 			wire = false;
 		glPushMatrix();
 		glTranslatef(Position.x(), Position.y(), Position.z());
+		glScalef(Size.x(), Size.y(), Size.z());
 		glColor3fv(&_color[0]);
 		switch (_type)
 		{
