@@ -80,11 +80,11 @@ void Transform::UpdateScene(int x, int y)
 #pragma region Rotation
 			if (scene->Translation.x())
 			{
-				node->Angles.x(node->Angles.x() + dimension.x()*50);
+				node->Angles.x(node->Angles.x() + dimension.y()*50);
 			}
 			if (scene->Translation.y())
 			{
-				node->Angles.y(node->Angles.y() + dimension.y()*50);
+				node->Angles.y(node->Angles.y() + dimension.x()*50);
 			}
 			if (scene->Translation.z())
 			{
