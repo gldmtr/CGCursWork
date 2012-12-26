@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <fstream>
 using namespace std;
 
 #include "Vector3.h"
@@ -24,6 +25,7 @@ public:
 	};
 
 	virtual void Draw(bool pick = false) = 0;
+	virtual void WriteToFile(ofstream* file, int level) = 0;
 	void Translate(Vector3f dimension);
 
 	int ID;

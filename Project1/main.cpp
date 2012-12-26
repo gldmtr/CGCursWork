@@ -209,6 +209,9 @@ void KeyboardFunc(unsigned char key, int x, int y)
 	case 's':
 		Transformation->Mode = SCALE;
 		break;
+	case 'v':
+		scene->Save("./Scene.txt");
+		break;
 	case 'n':
 		SceneNode* newNode = new Primitive(Vector3f(0,0,-10), 0, 1, Vector3f(0,0,0), false, 0);
 		scene->AddNewNode(newNode);
@@ -297,6 +300,7 @@ int main(int argc, char** argv)
 	glDisable(GL_LIGHTING);
 	glDisable(GL_LIGHT0);
 	glDisable(GL_COLOR_MATERIAL);
+	scene->Save("./Scene.txt");
 	delete scene;
 	delete Transformation;
 	delete device;

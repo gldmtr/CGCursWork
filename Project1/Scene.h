@@ -157,6 +157,20 @@ public:
 		return NewId;
 	}
 
+	void Save(char* filename)
+	{
+		ofstream out(filename, fstream::out);
+		string str = "<Scene>\n";
+		out.write(str.c_str(), str.length());
+		for (int i = 0; i < Nodes.size(); i++)
+		{
+			Nodes[i]->WriteToFile(&out, 1);
+		}
+		str = "</Scene>";
+		out.write(str.c_str(), str.length());
+		out.close();
+	}
+
 	vector<SceneNode*> Nodes;
 	Vector3<bool> Translation;
 	Vector3f CursorPos;
