@@ -2,9 +2,12 @@
 
 #include <vector>
 #include <fstream>
-using namespace std;
 
 #include "Vector3.h"
+
+using namespace std;
+
+#include "json\json.h"
 
 static int maxId = 0;
 
@@ -19,16 +22,14 @@ public:
 		Selected = false;
 		Position = Vector3f(0,0,0);
 		Size = Vector3f(1,1,1);
-		Angles = Vector3f(0,0,0);
 	};
 	~SceneNode()
 	{
 	};
 
 	virtual void Draw(bool pick = false) = 0;
-	virtual void WriteToFile(ofstream* file, int level) = 0;
+	virtual Json::Value Serialize() = 0;
 	void Translate(Vector3f dimension);
-	void Rotate(Vector3f angles);
 
 	int ID;
 	bool Selected;
@@ -42,11 +43,6 @@ public:
 void SceneNode::Translate(Vector3f dimension)
 {
 	Position += dimension;
-}
-
-void SceneNode::Rotate(Vector3f angles)
-{
-	Angles += angles;
 }
 
 int GetID()
