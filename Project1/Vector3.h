@@ -1,14 +1,12 @@
 #pragma once
 #include <Windows.h>
 #include <gl/GL.h>
-#include <string>
-
-using namespace std;
 
 template <typename Type>
 class Vector3 {	
-	public:	
+private:	
 	Type	data[3];	
+	public:	
 	Vector3() 
 	{ 
 		data[0] = 0; data[1] = 0; data[2] = 0; 
@@ -20,23 +18,6 @@ class Vector3 {
 	Vector3(const Type x, const Type y, const Type z) 
 	{ 
 		data[0] = x; data[1] = y; data[2] = z; 
-	}	
-	Vector3(string str) 
-	{ 
-		char* temp = (char*) str.c_str();
-		char buf[10] = {0};
-		strncpy(buf, temp, strstr(temp, " ") - temp);
-		data[0] = atof(buf);
-		temp = strstr(temp, " ") + 1;
-		
-		ZeroMemory(buf, 10);
-		strncpy(buf, temp, strstr(temp, " ") - temp);
-		data[1] = atof(buf);
-		temp = strstr(temp, " ") + 1;
-
-		ZeroMemory(buf, 10);
-		strcpy(buf, temp);
-		data[2] = atof(buf);
 	}	
 	Vector3	operator=(const Type d) 
 	{ 
@@ -271,12 +252,6 @@ class Vector3 {
 		return Vector3 ( m [0]*data[0] + m [4]*data[1] + m [8]*data[3],
 			              m [1]*data[0] + m [5]*data[1] + m [9]*data[3],
 		                  m [2]*data[0] + m [6]*data[1] + m [0]*data[3]);
-	}
-	string toString()
-	{
-		char buf[128];
-		sprintf(buf, "%3.2f %3.2f %3.2f\0", data[0], data[1], data[2]);
-		return string(buf);
 	}
 } ;
 
