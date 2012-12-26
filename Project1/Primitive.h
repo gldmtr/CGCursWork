@@ -33,11 +33,12 @@ public:
 			wire = false;
 		glPushMatrix();
 		glTranslatef(Position.x(), Position.y(), Position.z());
-		glScalef(Size.x(), Size.y(), Size.z());
 		glRotatef(Angles.x(),1,0,0);
 		glRotatef(Angles.y(),0,1,0);
 		glRotatef(Angles.z(),0,0,1);
+		glScalef(Size.x(), Size.y(), Size.z());
 		glColor3fv(&_color[0]);
+
 		switch (_type)
 		{
 		case 0:
