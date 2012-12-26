@@ -1,4 +1,6 @@
 #pragma once
+#include <Windows.h>
+#include <gl/GL.h>
 
 template <typename Type>
 class Vector3 {	
@@ -205,36 +207,40 @@ private:
 	}	
 	return len;	
 	}	
-	double	scalar(const Vector3& v) {	
-	return (double)data[0]*v.data[0] + (double)data[1]*v.data[1] + (double)data[2]*v.data[2];	
+	double	scalar(const Vector3& v) 
+	{	
+		return (double)data[0]*v.data[0] + (double)data[1]*v.data[1] + (double)data[2]*v.data[2];	
 	}	
-	Vector3	cross(const Vector3& v) {	
-	Vector3	 vn((double)data[1]*v.data[2] - (double)data[2]*v.data[1],	
-	(double)data[2]*v.data[0] - (double)data[0]*v.data[2],	
-	(double)data[0]*v.data[1] - (double)data[1]*v.data[0]);	
-	return vn;	
+	Vector3	cross(const Vector3& v) 
+	{	
+		Vector3	 vn((double)data[1]*v.data[2] - (double)data[2]*v.data[1],	
+		(double)data[2]*v.data[0] - (double)data[0]*v.data[2],	
+		(double)data[0]*v.data[1] - (double)data[1]*v.data[0]);	
+		return vn;	
 	}	
-	double	angle(Vector3& v) {	
-	Vector3	 v1(*this);	
-	Vector3	 v2(v);	
-	v1.normalize();	
-	v2.normalize();	
-	double	 prod = v1.scalar(v2);	
-	if ( prod > 1 ) prod = 1;	
-	if ( prod < -1 ) prod = -1;	
-	return(acos(prod));	
+	double	angle(Vector3& v) 
+	{	
+		Vector3	 v1(*this);	
+		Vector3	 v2(v);	
+		v1.normalize();	
+		v2.normalize();	
+		double	 prod = v1.scalar(v2);	
+		if ( prod > 1 ) prod = 1;	
+		if ( prod < -1 ) prod = -1;	
+		return(acos(prod));	
+		}	
+		Vector3	normal(Vector3& v1, Vector3& v2) {	
+		Vector3 edge1 = *this - v1;	
+		Vector3 edge2 = *this - v2;	
+		Vector3 normal = edge1.cross(edge2);	
+		normal.normalize();	
+		return(normal);	
 	}	
-	Vector3	normal(Vector3& v1, Vector3& v2) {	
-	Vector3 edge1 = *this - v1;	
-	Vector3 edge2 = *this - v2;	
-	Vector3 normal = edge1.cross(edge2);	
-	normal.normalize();	
-	return(normal);	
-	}	
-	bool notfinite() {	
-	int	 e = 0;	
-	for ( int i=0; i<3; i++ ) e += finite(data[i]);	
-	return ( e != 3 );	
+	bool notfinite() 
+	{	
+		int	 e = 0;	
+		for ( int i=0; i<3; i++ ) e += finite(data[i]);	
+		return ( e != 3 );	
 	}	
 	void print()
 	{
