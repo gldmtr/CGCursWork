@@ -3,9 +3,12 @@
 #include <string>
 
 #include "SceneNode.h"
+#include "json\json.h"
 
 #define Tab(var, level) for (int i = 0; i < level; i++) \
 							var += "\t";
+#define SPHERE 0
+#define CUBE 1
 
 using namespace std;
 
@@ -21,6 +24,17 @@ public:
 		Position = position;
 		_color = color;
 	}
+	Primitive(Json::Value val)
+	{
+		ID = val["ID"].asInt();
+		Selected = false;
+		Position = Vector3f(val["Position"].asString());
+		Size = Vector3f(val["Size"].asString());
+		_type = val["PrimitiveType"].asInt();
+		_wire = val["Wireframe"].asInt();
+		_color = Vector3f(val["Color"].asString());
+		_size = 1;
+	};
 
 	~Primitive()
 	{
@@ -33,10 +47,10 @@ public:
 			wire = false;
 		glPushMatrix();
 		glTranslatef(Position.x(), Position.y(), Position.z());
-		glScalef(Size.x(), Size.y(), Size.z());
 		glRotatef(Angles.x(),1,0,0);
 		glRotatef(Angles.y(),0,1,0);
 		glRotatef(Angles.z(),0,0,1);
+		glScalef(Size.x(), Size.y(), Size.z());
 		glColor3fv(&_color[0]);
 		switch (_type)
 		{
@@ -44,7 +58,7 @@ public:
 			if (!wire)
 				glutSolidSphere(_size, 16, 16);
 			else
-				glutSolidCube(_size);
+				glutWireCube(_size);
 			break;
 		default:
 			break;
@@ -52,27 +66,24 @@ public:
 		glPopMatrix();
 	}
 
-	void WriteToFile(ofstream* file, int level)
+	Json::Value Serialize() 
 	{
-		char buf[128] = {0};
-		string out;
-		Tab(out, level);
-		out += "<SceneNode>\n";
-			Tab(out, level+1);
-			sprintf(buf, "<Type = Primitive />\n\0");
-			out += buf;
-			Tab(out, level+1);
-			sprintf(buf, "<ID = %d />\n\0", ID);
-			out += buf;
-			Tab(out, level+1);
-			sprintf(buf, "<Position = %4.2f %4.2f %4.2f />\n\0", Position.x(),  Position.y(), Position.z());
-			out += buf;
-			Tab(out, level+1);
-			sprintf(buf, "<Size = %4.2f %4.2f %4.2f />\n\0", Size.x(),  Size.y(), Size.z());
-			out += buf;
-		Tab(out, level);
-		out += "</SceneNode>\n";
-		file->write(out.c_str(), out.length());
+		Json::Value first(Json::objectValue);
+		first["ID"] = ID;
+		first["ClassType"] = "Primitive";
+		first["PrimitiveType"] = _type;
+		first["Wireframe"] = _wire;
+		first["Position"] = Position.toString();
+		first["Size"] = Size.toString();
+		first["Color"] = _color.toString();
+		first["Parent"] = Json::Value(Parent == NULL ? 0 : Parent->ID);
+		Json::Value childs(Json::arrayValue);
+		for (int i = 0; i < Childs.size(); i++)
+		{
+			childs.append(Childs[i]->Serialize());
+		}
+		first["Childs"] = childs;
+		return first;
 	}
 
 private:

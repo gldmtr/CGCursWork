@@ -1,5 +1,6 @@
 #pragma once
 #include "SceneNode.h"
+#include "Primitive.h"
 #include "Device.h"
 
 class Scene
@@ -159,16 +160,53 @@ public:
 
 	void Save(char* filename)
 	{
+		Json::StyledWriter writer;
 		ofstream out(filename, fstream::out);
-		string str = "<Scene>\n";
-		out.write(str.c_str(), str.length());
+		Json::Value root(Json::arrayValue);
 		for (int i = 0; i < Nodes.size(); i++)
 		{
-			Nodes[i]->WriteToFile(&out, 1);
+			root.append(Nodes[i]->Serialize());
 		}
-		str = "</Scene>";
-		out.write(str.c_str(), str.length());
+		out << writer.write(root);
 		out.close();
+	}
+
+	void Load(string filename)
+	{
+		Json::Reader reader;
+		Json::Value root;
+
+		ifstream in(filename, ifstream::in);
+		char buf[512*1024] = {0};
+		string str;
+		while (in.getline(buf, 512*1024))
+		{
+			str += buf;
+			ZeroMemory(buf, 512*1024);
+		}
+		cout << str;
+		bool parsingSuccessful = reader.parse(str, root, false);
+		if ( !parsingSuccessful )
+		{
+			// report to the user the failure and their locations in the document.
+			std::cout  << reader.getFormatedErrorMessages()
+				   << "\n";
+		}
+		Json::ValueIterator iter = root.begin();
+
+		Nodes.clear();
+
+		while (iter != root.end())
+		{
+			Json::Value single = (*iter);
+			if (single["ClassType"] == "Primitive")
+			{
+				SceneNode* newNode = new Primitive(single);
+				Nodes.push_back(newNode);
+			}
+			iter ++;
+		}
+		in.close();
 	}
 
 	vector<SceneNode*> Nodes;

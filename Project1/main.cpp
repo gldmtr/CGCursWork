@@ -13,6 +13,8 @@
 
 using namespace std;
 
+#pragma comment(lib, "json.lib")
+
 #define Sin(x) sin(x/180*3.14)
 #define Cos(x) cos(x/180*3.14)
 
@@ -216,7 +218,7 @@ void KeyboardFunc(unsigned char key, int x, int y)
 		scene->Save("./Scene.txt");
 		break;
 	case 'n':
-		SceneNode* newNode = new Primitive(Vector3f(0,0,0), 0, 1, Vector3f(0,0,0), true, 0);
+		SceneNode* newNode = new Primitive(Vector3f(0,0,-10), 0, 1, Vector3f(0,0,0), false, 0);
 		scene->AddNewNode(newNode);
 		break;
 	}
@@ -274,11 +276,12 @@ void SpecialUpKeyboard(int key, int x, int y)
 
 int main(int argc, char** argv)
 {
-	for ( int i = 0; i < 20; i++)
+	/*for ( int i = 0; i < 20; i++)
 	{
 		scene->Nodes.push_back(new Primitive(Vector3f(rand()%50 - 25, rand()%50, -rand()%25 - 5), 0, 3, 
 			Vector3f((float)rand() / RAND_MAX, (float)rand() / RAND_MAX, (float)rand() / RAND_MAX), false, 0));
-	}
+	}*/
+	scene->Load("./Scene.txt");
 	glutInit(&argc, argv);
 	glutInitWindowSize(800,600);
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
