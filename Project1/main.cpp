@@ -209,11 +209,14 @@ void KeyboardFunc(unsigned char key, int x, int y)
 	case 's':
 		Transformation->Mode = SCALE;
 		break;
+	case 'r':
+		Transformation->Mode = ROTATE;
+		break;
 	case 'v':
 		scene->Save("./Scene.txt");
 		break;
 	case 'n':
-		SceneNode* newNode = new Primitive(Vector3f(0,0,-10), 0, 1, Vector3f(0,0,0), false, 0);
+		SceneNode* newNode = new Primitive(Vector3f(0,0,0), 0, 1, Vector3f(0,0,0), true, 0);
 		scene->AddNewNode(newNode);
 		break;
 	}

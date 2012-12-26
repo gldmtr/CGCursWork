@@ -76,6 +76,22 @@ void Transform::UpdateScene(int x, int y)
 			}
 			break;
 #pragma endregion
+		case ROTATE:
+#pragma region Rotation
+			if (scene->Translation.x())
+			{
+				node->Angles.x(node->Angles.x() + dimension.x()*5);
+			}
+			if (scene->Translation.y())
+			{
+				node->Angles.y(node->Angles.y() + dimension.y()*5);
+			}
+			if (scene->Translation.z())
+			{
+				node->Angles.z(node->Angles.z() + dimension.z()*5);
+			}
+			break;
+#pragma endregion
 		default:
 			break;
 		}
@@ -96,25 +112,41 @@ void Transform::DrawTransformAxis()
 		glPushMatrix();
 		glTranslatef(selected->Position.x(), selected->Position.y(), selected->Position.z());
 			glPushMatrix();
+			
 			(SelectedAxis == 1)||(SelectedAxis == 4)||(SelectedAxis == 5) ? glColor3f(1,1,0) : glColor3f(1,0,0);
 			glBegin(GL_LINES);
 				glVertex3fv(&Vector3f(0,0,0)[0]);
 				glVertex3fv(&Vector3f(2,0,0)[0]);
 			glEnd();
 			glTranslatef(1.5,0,0);
-				glRotatef(90, 0, 1, 0);
+			glRotatef(90, 0, 1, 0);
+			if (Mode == ROTATE){
+				(SelectedAxis == 1) ? glColor3f(1,1,0) : glColor3f(1,0,0);
+				glutSolidTorus(0.2, 0.5, 32, 32);
+			}
+			else{
+				
 				glutSolidCone(0.2, 0.7, 16, 16);
+			}
 			glPopMatrix();
 
 			glPushMatrix();
+
 			(SelectedAxis == 2)||(SelectedAxis == 4)||(SelectedAxis == 6) ? glColor3f(1,1,0) : glColor3f(0,1,0);
 			glBegin(GL_LINES);
 				glVertex3fv(&Vector3f(0,0,0)[0]);
 				glVertex3fv(&Vector3f(0,2,0)[0]);
 			glEnd();
 			glTranslatef(0,1.5,0);
-				glRotatef(90, -1, 0, 0);
+			glRotatef(90, -1, 0, 0);
+			if (Mode == ROTATE){
+				(SelectedAxis == 2) ? glColor3f(1,1,0) : glColor3f(0,1,0);
+				glutSolidTorus(0.2, 0.5, 32, 32);
+			}
+			else{
+				
 				glutSolidCone(0.2, 0.7, 16, 16);
+			}
 			glPopMatrix();
 
 			glPushMatrix();
@@ -124,7 +156,13 @@ void Transform::DrawTransformAxis()
 				glVertex3fv(&Vector3f(0,0,2)[0]);
 			glEnd();
 			glTranslatef(0,0,1.5);
+			if (Mode == ROTATE){
+				(SelectedAxis == 3) ? glColor3f(1,1,0) : glColor3f(0,0,1);
+				glutSolidTorus(0.2, 0.5, 32, 32);
+			}
+			else{
 				glutSolidCone(0.2, 0.7, 16, 16);
+			}
 			glPopMatrix();
 			
 
@@ -158,7 +196,7 @@ void Transform::DrawTransformAxis()
 		glEnable(GL_LIGHT0);
 	}
 }
-
+Transform* Transformation = new Transform();
 void PushAxis()
 {
 	glInitNames();
@@ -175,6 +213,9 @@ void PushAxis()
 			glEnd();
 			glTranslatef(1.5,0,0);
 				glRotatef(90, 0, 1, 0);
+				if (Transformation->Mode == ROTATE)
+				glutSolidTorus(0.2, 0.5, 32, 32);
+				else
 				glutSolidCone(0.2, 0.7, 16, 16);
 			glPopMatrix();
 
@@ -186,6 +227,9 @@ void PushAxis()
 			glEnd();
 			glTranslatef(0,1.5,0);
 				glRotatef(90, -1, 0, 0);
+				if (Transformation->Mode == ROTATE)
+				glutSolidTorus(0.2, 0.5, 32, 32);
+				else
 				glutSolidCone(0.2, 0.7, 16, 16);
 			glPopMatrix();
 
@@ -196,6 +240,9 @@ void PushAxis()
 				glVertex3fv(&Vector3f(0,0,2)[0]);
 			glEnd();
 			glTranslatef(0,0,1.5);
+				if (Transformation->Mode == ROTATE)
+				glutSolidTorus(0.2, 0.5, 32, 32);
+				else
 				glutSolidCone(0.2, 0.7, 16, 16);
 			glPopMatrix();
 		glPopMatrix();
@@ -267,4 +314,3 @@ int Transform::GetSelectAxisObject( int x, int y )
 	return -1;											
 }
 
-Transform* Transformation = new Transform();

@@ -19,6 +19,7 @@ public:
 		Selected = false;
 		Position = Vector3f(0,0,0);
 		Size = Vector3f(1,1,1);
+		Angles = Vector3f(0,0,0);
 	};
 	~SceneNode()
 	{
@@ -27,6 +28,7 @@ public:
 	virtual void Draw(bool pick = false) = 0;
 	virtual void WriteToFile(ofstream* file, int level) = 0;
 	void Translate(Vector3f dimension);
+	void Rotate(Vector3f angles);
 
 	int ID;
 	bool Selected;
@@ -34,11 +36,17 @@ public:
 	vector<SceneNode*> Childs;
 	Vector3f Position;
 	Vector3f Size;
+	Vector3f Angles;
 };
 
 void SceneNode::Translate(Vector3f dimension)
 {
 	Position += dimension;
+}
+
+void SceneNode::Rotate(Vector3f angles)
+{
+	Angles += angles;
 }
 
 int GetID()

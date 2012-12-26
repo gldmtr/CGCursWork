@@ -34,6 +34,9 @@ public:
 		glPushMatrix();
 		glTranslatef(Position.x(), Position.y(), Position.z());
 		glScalef(Size.x(), Size.y(), Size.z());
+		glRotatef(Angles.x(),1,0,0);
+		glRotatef(Angles.y(),0,1,0);
+		glRotatef(Angles.z(),0,0,1);
 		glColor3fv(&_color[0]);
 		switch (_type)
 		{
@@ -41,7 +44,7 @@ public:
 			if (!wire)
 				glutSolidSphere(_size, 16, 16);
 			else
-				glutWireCube(_size);
+				glutSolidCube(_size);
 			break;
 		default:
 			break;
