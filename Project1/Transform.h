@@ -5,6 +5,7 @@
 #define TRANSLATE 0
 #define ROTATE 1
 #define SCALE 2
+#define SET_CHILD 3
 
 class Transform
 {
@@ -19,6 +20,8 @@ public:
 	void UpdateScene(int x, int y);
 	void DrawTransformAxis();
 	int GetSelectAxisObject(int x, int y);
+	void PushAxis();
+	void SetChild();
 	int Mode;
 };
 
@@ -80,15 +83,15 @@ void Transform::UpdateScene(int x, int y)
 #pragma region Rotation
 			if (scene->Translation.x())
 			{
-				node->Angles.x(node->Angles.x() + dimension.x()*5);
+				node->Angles.x(node->Angles.x() + dimension.x()*50);
 			}
 			if (scene->Translation.y())
 			{
-				node->Angles.y(node->Angles.y() + dimension.y()*5);
+				node->Angles.y(node->Angles.y() + dimension.y()*50);
 			}
 			if (scene->Translation.z())
 			{
-				node->Angles.z(node->Angles.z() + dimension.z()*5);
+				node->Angles.z(node->Angles.z() + dimension.z()*50);
 			}
 			break;
 #pragma endregion
@@ -102,87 +105,103 @@ void Transform::UpdateScene(int x, int y)
 
 void Transform::DrawTransformAxis()
 {
-	SceneNode *selected;
-	int SelectedAxis = scene->SelectedAxis;
-	if ((selected = scene->GetSelectedNode()) != NULL)
+	SceneNode* selected = scene->GetSelectedNode();
+	if (Mode < 3)
 	{
-		glDisable(GL_DEPTH_TEST);
-		glDisable(GL_LIGHTING);
-		glDisable(GL_LIGHT0);
-		glPushMatrix();
-		glTranslatef(selected->Position.x(), selected->Position.y(), selected->Position.z());
+		int SelectedAxis = scene->SelectedAxis;
+		if (selected != NULL)
+		{
+			glDisable(GL_DEPTH_TEST);
+			glDisable(GL_LIGHTING);
+			glDisable(GL_LIGHT0);
 			glPushMatrix();
-			(SelectedAxis == 1)||(SelectedAxis == 4)||(SelectedAxis == 5) ? glColor3f(1,1,0) : glColor3f(1,0,0);
-			glBegin(GL_LINES);
-				glVertex3fv(&Vector3f(0,0,0)[0]);
-				glVertex3fv(&Vector3f(2,0,0)[0]);
-			glEnd();
-			glTranslatef(1.5,0,0);
-				glRotatef(90, 0, 1, 0);
-				glutSolidCone(0.2, 0.7, 16, 16);
-			glPopMatrix();
+				selected->ApplyTransform();
+				glPushMatrix();
+				(SelectedAxis == 1)||(SelectedAxis == 4)||(SelectedAxis == 5) ? glColor3f(1,1,0) : glColor3f(1,0,0);
+				glBegin(GL_LINES);
+					glVertex3fv(&Vector3f(0,0,0)[0]);
+					glVertex3fv(&Vector3f(2,0,0)[0]);
+				glEnd();
+				glTranslatef(1.5,0,0);
+					glRotatef(90, 0, 1, 0);
+					glutSolidCone(0.2, 0.7, 16, 16);
+				glPopMatrix();
 
-			glPushMatrix();
-			(SelectedAxis == 2)||(SelectedAxis == 4)||(SelectedAxis == 6) ? glColor3f(1,1,0) : glColor3f(0,1,0);
-			glBegin(GL_LINES);
-				glVertex3fv(&Vector3f(0,0,0)[0]);
-				glVertex3fv(&Vector3f(0,2,0)[0]);
-			glEnd();
-			glTranslatef(0,1.5,0);
-				glRotatef(90, -1, 0, 0);
-				glutSolidCone(0.2, 0.7, 16, 16);
-			glPopMatrix();
+				glPushMatrix();
+				(SelectedAxis == 2)||(SelectedAxis == 4)||(SelectedAxis == 6) ? glColor3f(1,1,0) : glColor3f(0,1,0);
+				glBegin(GL_LINES);
+					glVertex3fv(&Vector3f(0,0,0)[0]);
+					glVertex3fv(&Vector3f(0,2,0)[0]);
+				glEnd();
+				glTranslatef(0,1.5,0);
+					glRotatef(90, -1, 0, 0);
+					glutSolidCone(0.2, 0.7, 16, 16);
+				glPopMatrix();
 
-			glPushMatrix();
-			(SelectedAxis == 3)||(SelectedAxis == 5)||(SelectedAxis == 6) ? glColor3f(1,1,0) : glColor3f(0,0,1);
-			glBegin(GL_LINES);
-				glVertex3fv(&Vector3f(0,0,0)[0]);
-				glVertex3fv(&Vector3f(0,0,2)[0]);
-			glEnd();
-			glTranslatef(0,0,1.5);
-				glutSolidCone(0.2, 0.7, 16, 16);
-			glPopMatrix();
+				glPushMatrix();
+				(SelectedAxis == 3)||(SelectedAxis == 5)||(SelectedAxis == 6) ? glColor3f(1,1,0) : glColor3f(0,0,1);
+				glBegin(GL_LINES);
+					glVertex3fv(&Vector3f(0,0,0)[0]);
+					glVertex3fv(&Vector3f(0,0,2)[0]);
+				glEnd();
+				glTranslatef(0,0,1.5);
+					glutSolidCone(0.2, 0.7, 16, 16);
+				glPopMatrix();
 			
 
-
-			glBegin(GL_LINES);
-			SelectedAxis == 4 ? glColor3f(1, 1, 0): glColor3f(0, 1, 0);
-				glVertex3f(0, 1.5f, 0);
-				glVertex3f(1.5f, 1.5f, 0);
-			SelectedAxis == 4 ? glColor3f(1, 1, 0): glColor3f(1, 0, 0);
-				glVertex3f(1.5f, 1.5f, 0);
-				glVertex3f(1.5f, 0, 0);
+				if (!(Mode == ROTATE))
+				{
+					glBegin(GL_LINES);
+					SelectedAxis == 4 ? glColor3f(1, 1, 0): glColor3f(0, 1, 0);
+						glVertex3f(0, 1.5f, 0);
+						glVertex3f(1.5f, 1.5f, 0);
+					SelectedAxis == 4 ? glColor3f(1, 1, 0): glColor3f(1, 0, 0);
+						glVertex3f(1.5f, 1.5f, 0);
+						glVertex3f(1.5f, 0, 0);
 					
-			SelectedAxis == 5 ? glColor3f(1, 1, 0): glColor3f(0, 0, 1);
-				glVertex3f(0, 0, 1.5f);
-				glVertex3f(1.5f, 0, 1.5f);
-			SelectedAxis == 5 ? glColor3f(1, 1, 0): glColor3f(1, 0, 0);
-				glVertex3f(1.5f, 0, 1.5f);
-				glVertex3f(1.5f, 0, 0);
+					SelectedAxis == 5 ? glColor3f(1, 1, 0): glColor3f(0, 0, 1);
+						glVertex3f(0, 0, 1.5f);
+						glVertex3f(1.5f, 0, 1.5f);
+					SelectedAxis == 5 ? glColor3f(1, 1, 0): glColor3f(1, 0, 0);
+						glVertex3f(1.5f, 0, 1.5f);
+						glVertex3f(1.5f, 0, 0);
 					
-			SelectedAxis == 6 ? glColor3f(1, 1, 0): glColor3f(0, 1, 0);
-				glVertex3f(0, 1.5f, 0);
-				glVertex3f(0, 1.5f, 1.5f);
-			SelectedAxis == 6 ? glColor3f(1, 1, 0): glColor3f(0, 0, 1);
-				glVertex3f(0, 1.5f, 1.5f);
-				glVertex3f(0, 0, 1.5f);
-			glEnd();
-		glPopMatrix();
+					SelectedAxis == 6 ? glColor3f(1, 1, 0): glColor3f(0, 1, 0);
+						glVertex3f(0, 1.5f, 0);
+						glVertex3f(0, 1.5f, 1.5f);
+					SelectedAxis == 6 ? glColor3f(1, 1, 0): glColor3f(0, 0, 1);
+						glVertex3f(0, 1.5f, 1.5f);
+						glVertex3f(0, 0, 1.5f);
+					glEnd();
+				}
+			glPopMatrix();
 
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_LIGHTING);
-		glEnable(GL_LIGHT0);
+			glEnable(GL_DEPTH_TEST);
+			glEnable(GL_LIGHTING);
+			glEnable(GL_LIGHT0);
+		}
+	}
+	if (Mode == SET_CHILD)
+	{
+		if (selected != NULL)
+		{
+			scene->Child->Parent = selected;
+			selected->Childs.push_back(scene->Child);
+			scene->Child->Position = scene->Child->Position - selected->GetAbsoluteCoordinates();
+			scene->Child->Angles = scene->Child->GetAbsoluteAngle() - scene->Child->Angles;
+			Mode = 0;
+		}
 	}
 }
 
-void PushAxis()
+void Transform::PushAxis()
 {
 	glInitNames();
 	glPushName(0);
 	Vector3f pos = scene->GetSelectedNode()->Position;
 	SceneNode* selected = scene->GetSelectedNode();
 	glPushMatrix();
-		glTranslatef(selected->Position.x(), selected->Position.y(), selected->Position.z());
+	selected->ApplyTransform();
 			glPushMatrix();
 			glLoadName(1);
 			glBegin(GL_LINES);
@@ -215,30 +234,32 @@ void PushAxis()
 				glutSolidCone(0.2, 0.7, 16, 16);
 			glPopMatrix();
 		glPopMatrix();
+		if (!(Mode == ROTATE))
+		{
+			glLoadName(4);	// плоскость xy
+				glBegin(GL_QUADS);
+					glVertex3f(pos.x(), pos.y(), pos.z());
+					glVertex3f(pos.x(), pos.y() + 1.5f, pos.z());
+					glVertex3f(pos.x() + 1.5f, pos.y() + 1.5f, pos.z());
+					glVertex3f(pos.x() + 1.5f, pos.y(), pos.z());
+				glEnd();
 
-	glLoadName(4);	// плоскость xy
-		glBegin(GL_QUADS);
-			glVertex3f(pos.x(), pos.y(), pos.z());
-			glVertex3f(pos.x(), pos.y() + 1.5f, pos.z());
-			glVertex3f(pos.x() + 1.5f, pos.y() + 1.5f, pos.z());
-			glVertex3f(pos.x() + 1.5f, pos.y(), pos.z());
-		glEnd();
+			glLoadName(5);	// плоскость xz
+				glBegin(GL_QUADS);
+					glVertex3f(pos.x(), pos.y(), pos.z());
+					glVertex3f(pos.x(), pos.y(), pos.z() + 1.5f);
+					glVertex3f(pos.x() + 1.5f, pos.y(), pos.z() + 1.5f);
+					glVertex3f(pos.x() + 1.5f, pos.y(), pos.z());
+				glEnd();
 
-	glLoadName(5);	// плоскость xz
-		glBegin(GL_QUADS);
-			glVertex3f(pos.x(), pos.y(), pos.z());
-			glVertex3f(pos.x(), pos.y(), pos.z() + 1.5f);
-			glVertex3f(pos.x() + 1.5f, pos.y(), pos.z() + 1.5f);
-			glVertex3f(pos.x() + 1.5f, pos.y(), pos.z());
-		glEnd();
-
-	glLoadName(6);	// плоскость yz
-		glBegin(GL_QUADS);
-			glVertex3f(pos.x(), pos.y(), pos.z());
-			glVertex3f(pos.x(), pos.y() + 1.5f, pos.z());
-			glVertex3f(pos.x(), pos.y() + 1.5f, pos.z() + 1.5f);
-			glVertex3f(pos.x(), pos.y(), pos.z() + 1.5f);
-		glEnd();
+			glLoadName(6);	// плоскость yz
+				glBegin(GL_QUADS);
+					glVertex3f(pos.x(), pos.y(), pos.z());
+					glVertex3f(pos.x(), pos.y() + 1.5f, pos.z());
+					glVertex3f(pos.x(), pos.y() + 1.5f, pos.z() + 1.5f);
+					glVertex3f(pos.x(), pos.y(), pos.z() + 1.5f);
+				glEnd();
+		}
 }
 
 int Transform::GetSelectAxisObject( int x, int y )

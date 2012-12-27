@@ -28,7 +28,12 @@ public:
 	};
 
 	virtual void Draw(bool pick = false) = 0;
-	virtual Json::Value Serialize() = 0;
+	virtual Json::Value Serialize(bool root = true) = 0;
+	virtual SceneNode* GetSelected() = 0;
+	virtual SceneNode* GetByID(int id) = 0;
+	virtual void ApplyTransform() = 0;
+	virtual Vector3f GetAbsoluteCoordinates() = 0;
+	virtual Vector3f GetAbsoluteAngle() = 0;
 	void Translate(Vector3f dimension);
 
 	int ID;

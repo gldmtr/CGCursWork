@@ -1,222 +1,227 @@
 [
    {
-      "Childs" : [],
-      "ClassType" : "Primitive",
-      "Color" : "0.19 0.56 0.00",
-      "ID" : 1,
-      "Parent" : 0,
-      "Position" : "-1.00 19.00 -5.00",
-      "PrimitiveType" : 0,
-      "Size" : "1.00 1.00 1.00",
-      "Wireframe" : false
-   },
-   {
-      "Childs" : [],
-      "ClassType" : "Primitive",
-      "Color" : "0.82 0.90 0.35",
-      "ID" : 2,
-      "Parent" : 0,
-      "Position" : "20.00 5.00 -19.00",
-      "PrimitiveType" : 0,
-      "Size" : "1.00 1.00 1.00",
-      "Wireframe" : false
-   },
-   {
-      "Childs" : [],
-      "ClassType" : "Primitive",
-      "Color" : "0.30 0.51 0.71",
-      "ID" : 3,
-      "Parent" : 0,
-      "Position" : "17.00 45.00 -21.00",
-      "PrimitiveType" : 0,
-      "Size" : "1.00 1.00 1.00",
-      "Wireframe" : false
-   },
-   {
-      "Childs" : [],
-      "ClassType" : "Primitive",
-      "Color" : "0.99 0.17 0.15",
-      "ID" : 4,
-      "Parent" : 0,
-      "Position" : "-22.00 2.00 -9.00",
-      "PrimitiveType" : 0,
-      "Size" : "1.00 1.00 1.00",
-      "Wireframe" : false
-   },
-   {
-      "Childs" : [],
-      "ClassType" : "Primitive",
-      "Color" : "0.53 0.38 0.01",
-      "ID" : 5,
-      "Parent" : 0,
-      "Position" : "20.00 18.00 -21.00",
-      "PrimitiveType" : 0,
-      "Size" : "1.00 1.00 1.00",
-      "Wireframe" : false
-   },
-   {
-      "Childs" : [],
-      "ClassType" : "Primitive",
-      "Color" : "0.45 0.66 0.17",
-      "ID" : 6,
-      "Parent" : 0,
-      "Position" : "-13.00 19.00 -18.00",
-      "PrimitiveType" : 0,
-      "Size" : "1.00 1.00 1.00",
-      "Wireframe" : false
-   },
-   {
-      "Childs" : [],
-      "ClassType" : "Primitive",
-      "Color" : "0.52 0.80 0.78",
-      "ID" : 7,
-      "Parent" : 0,
-      "Position" : "-14.00 3.00 -24.00",
-      "PrimitiveType" : 0,
-      "Size" : "1.00 1.00 1.00",
-      "Wireframe" : false
-   },
-   {
-      "Childs" : [],
-      "ClassType" : "Primitive",
-      "Color" : "0.54 0.93 0.96",
-      "ID" : 8,
-      "Parent" : 0,
-      "Position" : "-14.00 41.00 -19.00",
-      "PrimitiveType" : 0,
-      "Size" : "1.00 1.00 1.00",
-      "Wireframe" : false
-   },
-   {
-      "Childs" : [],
+      "Childs" : [
+         {
+            "Childs" : [
+               {
+                  "Childs" : [],
+                  "ClassType" : "Primitive",
+                  "Color" : "0.99 0.17 0.15",
+                  "ID" : 4,
+                  "Parent" : 7,
+                  "Position" : "3.06 -0.04 -0.02",
+                  "PrimitiveType" : 1,
+                  "Size" : "1.00 1.00 2.33",
+                  "Wireframe" : false
+               }
+            ],
+            "ClassType" : "Primitive",
+            "Color" : "0.52 0.80 0.78",
+            "ID" : 7,
+            "Parent" : 9,
+            "Position" : "2.79 -1.51 0.00",
+            "PrimitiveType" : 1,
+            "Size" : "5.71 1.00 1.00",
+            "Wireframe" : false
+         }
+      ],
       "ClassType" : "Primitive",
       "Color" : "0.78 0.21 0.86",
       "ID" : 9,
       "Parent" : 0,
       "Position" : "-18.00 12.00 -24.00",
-      "PrimitiveType" : 0,
-      "Size" : "1.00 1.00 1.00",
+      "PrimitiveType" : 1,
+      "Size" : "1.00 4.36 1.06",
       "Wireframe" : false
    },
    {
-      "Childs" : [],
-      "ClassType" : "Primitive",
-      "Color" : "0.27 0.39 0.61",
-      "ID" : 10,
-      "Parent" : 0,
-      "Position" : "3.00 29.00 -21.00",
-      "PrimitiveType" : 0,
-      "Size" : "1.00 1.00 1.00",
-      "Wireframe" : false
-   },
-   {
-      "Childs" : [],
-      "ClassType" : "Primitive",
-      "Color" : "0.68 0.09 0.38",
-      "ID" : 11,
-      "Parent" : 0,
-      "Position" : "-19.00 38.00 -22.00",
-      "PrimitiveType" : 0,
-      "Size" : "1.00 1.00 1.00",
-      "Wireframe" : false
-   },
-   {
-      "Childs" : [],
-      "ClassType" : "Primitive",
-      "Color" : "0.59 0.27 0.28",
-      "ID" : 12,
-      "Parent" : 0,
-      "Position" : "-20.00 46.00 -28.00",
-      "PrimitiveType" : 0,
-      "Size" : "1.00 1.00 1.00",
-      "Wireframe" : false
-   },
-   {
-      "Childs" : [],
+      "Childs" : [
+         {
+            "Childs" : [
+               {
+                  "Childs" : [],
+                  "ClassType" : "Primitive",
+                  "Color" : "0.19 0.56 0.00",
+                  "ID" : 1,
+                  "Parent" : 6,
+                  "Position" : "-0.05 -0.25 0.77",
+                  "PrimitiveType" : 1,
+                  "Size" : "1.00 1.00 1.00",
+                  "Wireframe" : false
+               }
+            ],
+            "ClassType" : "Primitive",
+            "Color" : "0.45 0.66 0.17",
+            "ID" : 6,
+            "Parent" : 13,
+            "Position" : "-0.80 1.26 -0.59",
+            "PrimitiveType" : 1,
+            "Size" : "1.00 1.00 1.00",
+            "Wireframe" : false
+         }
+      ],
       "ClassType" : "Primitive",
       "Color" : "0.74 0.21 0.48",
       "ID" : 13,
       "Parent" : 0,
-      "Position" : "-24.00 6.00 -5.00",
-      "PrimitiveType" : 0,
-      "Size" : "1.00 1.00 1.00",
+      "Position" : "-3.19 15.33 -12.03",
+      "PrimitiveType" : 1,
+      "Size" : "6.12 1.00 1.84",
       "Wireframe" : false
    },
    {
-      "Childs" : [],
-      "ClassType" : "Primitive",
-      "Color" : "0.60 0.11 0.74",
-      "ID" : 14,
-      "Parent" : 0,
-      "Position" : "-21.00 34.00 -28.00",
-      "PrimitiveType" : 0,
-      "Size" : "1.00 1.00 1.00",
-      "Wireframe" : false
-   },
-   {
-      "Childs" : [],
-      "ClassType" : "Primitive",
-      "Color" : "0.15 0.36 0.57",
-      "ID" : 15,
-      "Parent" : 0,
-      "Position" : "-17.00 31.00 -6.00",
-      "PrimitiveType" : 0,
-      "Size" : "1.00 1.00 1.00",
-      "Wireframe" : false
-   },
-   {
-      "Childs" : [],
+      "Childs" : [
+         {
+            "Childs" : [],
+            "ClassType" : "Primitive",
+            "Color" : "0.53 0.38 0.01",
+            "ID" : 5,
+            "Parent" : 16,
+            "Position" : "7.00 -19.00 7.00",
+            "PrimitiveType" : 1,
+            "Size" : "1.00 1.00 1.00",
+            "Wireframe" : false
+         },
+         {
+            "Childs" : [],
+            "ClassType" : "Primitive",
+            "Color" : "0.27 0.39 0.61",
+            "ID" : 10,
+            "Parent" : 16,
+            "Position" : "-10.00 -8.00 7.00",
+            "PrimitiveType" : 1,
+            "Size" : "1.00 1.00 1.00",
+            "Wireframe" : false
+         },
+         {
+            "Childs" : [],
+            "ClassType" : "Primitive",
+            "Color" : "0.15 0.68 0.97",
+            "ID" : 19,
+            "Parent" : 16,
+            "Position" : "-16.00 -13.00 3.00",
+            "PrimitiveType" : 1,
+            "Size" : "1.00 1.00 1.00",
+            "Wireframe" : false
+         },
+         {
+            "Childs" : [],
+            "ClassType" : "Primitive",
+            "Color" : "0.30 0.51 0.71",
+            "ID" : 3,
+            "Parent" : 16,
+            "Position" : "4.00 8.00 7.00",
+            "PrimitiveType" : 1,
+            "Size" : "1.00 1.00 1.00",
+            "Wireframe" : false
+         },
+         {
+            "Childs" : [],
+            "ClassType" : "Primitive",
+            "Color" : "0.82 0.90 0.35",
+            "ID" : 2,
+            "Parent" : 16,
+            "Position" : "7.00 -32.00 9.00",
+            "PrimitiveType" : 1,
+            "Size" : "1.00 1.00 1.00",
+            "Wireframe" : false
+         },
+         {
+            "Childs" : [],
+            "ClassType" : "Primitive",
+            "Color" : "0.54 0.93 0.96",
+            "ID" : 8,
+            "Parent" : 16,
+            "Position" : "18.72 4.00 9.00",
+            "PrimitiveType" : 1,
+            "Size" : "1.00 1.00 1.00",
+            "Wireframe" : false
+         },
+         {
+            "Childs" : [],
+            "ClassType" : "Primitive",
+            "Color" : "0.82 0.18 0.19",
+            "ID" : 20,
+            "Parent" : 16,
+            "Position" : "24.97 10.00 0.00",
+            "PrimitiveType" : 1,
+            "Size" : "1.00 1.00 1.00",
+            "Wireframe" : false
+         },
+         {
+            "Childs" : [],
+            "ClassType" : "Primitive",
+            "Color" : "0.70 0.06 0.49",
+            "ID" : 17,
+            "Parent" : 16,
+            "Position" : "26.29 -4.00 7.00",
+            "PrimitiveType" : 1,
+            "Size" : "1.00 1.00 1.00",
+            "Wireframe" : false
+         },
+         {
+            "Childs" : [],
+            "ClassType" : "Primitive",
+            "Color" : "0.60 0.11 0.74",
+            "ID" : 14,
+            "Parent" : 16,
+            "Position" : "-34.00 -3.00 0.00",
+            "PrimitiveType" : 1,
+            "Size" : "1.00 1.00 1.00",
+            "Wireframe" : false
+         },
+         {
+            "Childs" : [],
+            "ClassType" : "Primitive",
+            "Color" : "0.69 0.91 0.14",
+            "ID" : 18,
+            "Parent" : 16,
+            "Position" : "-32.00 -10.00 18.00",
+            "PrimitiveType" : 1,
+            "Size" : "1.00 1.00 1.00",
+            "Wireframe" : false
+         },
+         {
+            "Childs" : [],
+            "ClassType" : "Primitive",
+            "Color" : "0.68 0.09 0.38",
+            "ID" : 11,
+            "Parent" : 16,
+            "Position" : "-32.00 1.00 6.00",
+            "PrimitiveType" : 1,
+            "Size" : "1.00 1.00 1.00",
+            "Wireframe" : false
+         },
+         {
+            "Childs" : [],
+            "ClassType" : "Primitive",
+            "Color" : "0.59 0.27 0.28",
+            "ID" : 12,
+            "Parent" : 16,
+            "Position" : "-8.84 24.51 0.00",
+            "PrimitiveType" : 1,
+            "Size" : "1.00 1.00 1.00",
+            "Wireframe" : false
+         },
+         {
+            "Childs" : [],
+            "ClassType" : "Primitive",
+            "Color" : "0.15 0.36 0.57",
+            "ID" : 15,
+            "Parent" : 16,
+            "Position" : "-30.00 -6.00 22.00",
+            "PrimitiveType" : 1,
+            "Size" : "1.00 1.00 1.00",
+            "Wireframe" : false
+         }
+      ],
       "ClassType" : "Primitive",
       "Color" : "0.75 0.99 0.52",
       "ID" : 16,
       "Parent" : 0,
       "Position" : "13.00 37.00 -28.00",
-      "PrimitiveType" : 0,
-      "Size" : "1.00 1.00 1.00",
-      "Wireframe" : false
-   },
-   {
-      "Childs" : [],
-      "ClassType" : "Primitive",
-      "Color" : "0.70 0.06 0.49",
-      "ID" : 17,
-      "Parent" : 0,
-      "Position" : "-10.00 33.00 -21.00",
-      "PrimitiveType" : 0,
-      "Size" : "1.00 1.00 1.00",
-      "Wireframe" : false
-   },
-   {
-      "Childs" : [],
-      "ClassType" : "Primitive",
-      "Color" : "0.69 0.91 0.14",
-      "ID" : 18,
-      "Parent" : 0,
-      "Position" : "-19.00 27.00 -10.00",
-      "PrimitiveType" : 0,
-      "Size" : "1.00 1.00 1.00",
-      "Wireframe" : false
-   },
-   {
-      "Childs" : [],
-      "ClassType" : "Primitive",
-      "Color" : "0.15 0.68 0.97",
-      "ID" : 19,
-      "Parent" : 0,
-      "Position" : "-3.00 24.00 -25.00",
-      "PrimitiveType" : 0,
-      "Size" : "1.00 1.00 1.00",
-      "Wireframe" : false
-   },
-   {
-      "Childs" : [],
-      "ClassType" : "Primitive",
-      "Color" : "0.82 0.18 0.19",
-      "ID" : 20,
-      "Parent" : 0,
-      "Position" : "-13.00 47.00 -28.00",
-      "PrimitiveType" : 0,
-      "Size" : "1.00 1.00 1.00",
+      "PrimitiveType" : 1,
+      "Size" : "24.42 25.35 28.78",
       "Wireframe" : false
    }
 ]

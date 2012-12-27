@@ -25,7 +25,6 @@ public:
 		glPushName(0);
 		for (int i = 0; i < this->Nodes.size(); i++)
 		{
-			glLoadName(this->Nodes[i]->ID);
 			this->Nodes[i]->Draw(true);
 		}
 	}
@@ -62,7 +61,6 @@ public:
 					selObject = selBuffer[(i * 4) + 3];
 				}
 			}
-			cout << selObject <<  endl;
 			return selObject;
 		}
 
@@ -73,9 +71,10 @@ public:
 	{
 		for (int i = 0; i < Nodes.size(); i++)
 		{
-			if (Nodes[i]->ID == id)
+			SceneNode* sel = NULL;
+			if ((sel = Nodes[i]->GetByID(id)) != NULL)
 			{
-				return Nodes[i];
+				return sel;
 			}
 		}
 		return NULL;
@@ -135,8 +134,9 @@ public:
 	{
 		for (int i = 0; i < Nodes.size(); i++)
 		{
-			if (Nodes[i]->Selected)
-				return Nodes[i];
+			SceneNode* sel = NULL;
+			if ((sel = Nodes[i]->GetSelected()) != NULL)
+				return sel;
 		}
 		return NULL;
 	}
@@ -165,10 +165,14 @@ public:
 		Json::Value root(Json::arrayValue);
 		for (int i = 0; i < Nodes.size(); i++)
 		{
-			root.append(Nodes[i]->Serialize());
+			Json::Value val = Nodes[i]->Serialize();
+			if (val == Json::Value(-1))
+				continue;
+			root.append(val);
 		}
 		out << writer.write(root);
 		out.close();
+		cout << "Scene was saved to file: " << filename << endl;
 	}
 
 	void Load(string filename)
@@ -184,7 +188,6 @@ public:
 			str += buf;
 			ZeroMemory(buf, 512*1024);
 		}
-		cout << str;
 		bool parsingSuccessful = reader.parse(str, root, false);
 		if ( !parsingSuccessful )
 		{
@@ -201,12 +204,15 @@ public:
 			Json::Value single = (*iter);
 			if (single["ClassType"] == "Primitive")
 			{
-				SceneNode* newNode = new Primitive(single);
+				if (single["ParentID"].asInt() != 0)
+					continue;
+				SceneNode* newNode = new Primitive(GetObjectByID(single["ParentID"].asInt()), single);
 				Nodes.push_back(newNode);
 			}
 			iter ++;
 		}
 		in.close();
+		cout << "Scene was loaded from file: " << filename << endl;
 	}
 
 	vector<SceneNode*> Nodes;
@@ -220,6 +226,7 @@ public:
 	float zPoint;
 	int SelectedAxis;
 	bool SkipTransform;
+	SceneNode* Child;
 };
 
 Scene *scene = new Scene();

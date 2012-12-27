@@ -88,11 +88,6 @@ void Draw()
 
 void MouseCallback(int button, int state, int x, int y)
 {
-	cout << "-------------------------" << endl;
-	cout << button << "button pressed" << endl;
-	scene->GetPoint(x, y).print();
-	cout << endl << scene->zPoint << endl;
-	cout << "-------------------------" << endl;
 	if (state == GLUT_DOWN)
 	{
 		if (scene->IsNewObject)
@@ -188,7 +183,6 @@ void PassiveMotionFunc(int x, int y)
 	if (scene->GetSelectedNode() == NULL)
 		return;
 	scene->SelectedAxis = 0;
-	scene->GetPoint(x, y).print();
 	scene->SelectedAxis = Transformation->GetSelectAxisObject(x,y);
 }
 
@@ -208,12 +202,26 @@ void KeyboardFunc(unsigned char key, int x, int y)
 		scene->Translation = Vector3<bool>(false, false, false);
 		scene->Translation.z(true);
 		break;
+	case 't':
+		Transformation->Mode = TRANSLATE;
+		break;
 	case 's':
 		Transformation->Mode = SCALE;
 		break;
 	case 'r':
 		Transformation->Mode = ROTATE;
 		break;
+	case 'c':
+		{
+			SceneNode* selected= scene->GetSelectedNode();
+			if (selected != NULL)
+			{
+				scene->Child = selected;
+				scene->DisableSelection();
+				Transformation->Mode = SET_CHILD;
+			}
+			break;
+		}
 	case 'v':
 		scene->Save("./Scene.txt");
 		break;
@@ -274,11 +282,15 @@ void SpecialUpKeyboard(int key, int x, int y)
 		device->NavigationKeys[NAV_LEFT] = false;
 }
 
+void input()
+{
+}
+
 int main(int argc, char** argv)
 {
 	/*for ( int i = 0; i < 20; i++)
 	{
-		scene->Nodes.push_back(new Primitive(Vector3f(rand()%50 - 25, rand()%50, -rand()%25 - 5), 0, 3, 
+		scene->Nodes.push_back(new Primitive(Vector3f(rand()%50 - 25, rand()%50, -rand()%25 - 5), 1, 3, 
 			Vector3f((float)rand() / RAND_MAX, (float)rand() / RAND_MAX, (float)rand() / RAND_MAX), false, 0));
 	}*/
 	scene->Load("./Scene.txt");
@@ -296,6 +308,7 @@ int main(int argc, char** argv)
 	glutSpecialFunc(SpecialKeyboard);
 	glutSpecialUpFunc(SpecialUpKeyboard);
 	glutTimerFunc(50, TimerCallback, 50);
+	glutIdleFunc(input);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
